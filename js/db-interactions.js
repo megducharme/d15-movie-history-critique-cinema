@@ -10,7 +10,7 @@ let Handlebars = require("hbsfy/runtime");
 function getUserMovies(userId) {
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: `https://movie-history-e8f3d.firebaseio.com/movies.json?orderBy="user"&equalTo="${userId}"`
+      url: `https://movie-hisotry-group-project.firebaseio.com/movies.json?orderBy="user"&equalTo="${userId}"`
     }).done(function(myMovieData){
       resolve(myMovieData);
       // thom- added fail reject user messages/////////////////
@@ -36,7 +36,7 @@ function getUserMovies(userId) {
 function addMovieToFb(movieFormObj) {
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: 'https://movie-history-e8f3d.firebaseio.com/movies.json',
+      url: 'https://movie-hisotry-group-project.firebaseio.com/movies.json',
       type: 'POST',
       data: JSON.stringify(movieFormObj),
       dataType: 'json'
@@ -51,7 +51,7 @@ function deleteMovieFromFb(movieId) {
   console.log("movieId", movieId);
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: `https://movie-history-e8f3d.firebaseio.com/movies/${movieId}.json`,
+      url: `https://movie-hisotry-group-project.firebaseio.com/movies/${movieId}.json`,
       type: 'DELETE'
     }).done(function(data) {
       resolve(data);
@@ -84,7 +84,7 @@ function getMovieTitle() {
 function rateMovie(movieFormObj, movieId) {
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: `https://movie-history-e8f3d.firebaseio.com/movies/${movieId}.json`,
+      url: `https://movie-hisotry-group-project.firebaseio.com/movies/${movieId}.json`,
       type: 'PUT',
       data: JSON.stringify(movieFormObj)
     }).done(function(data) {

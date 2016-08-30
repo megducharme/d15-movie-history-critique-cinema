@@ -14,6 +14,7 @@
     "hbsfy": "^2.7.0",
     "jshint": "^2.9.3",
     "jshint-stylish": "^2.2.1",
+    "firebase": "^3.3.0",
     "matchdep": "^0.3.0"
   }
 }
