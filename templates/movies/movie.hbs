@@ -1,12 +1,24 @@
 {{!-- {{#each this}} --}}
-<div class="movies">
-      <h3>Title:{{Title}}</h3>
-      <h4>Release Date:{{Released}}</h4>
-      <h4>Starring: {{Actors}}</h4>
+<div class="col s5 card movies horizontal">
+  <div class="card-image">
+  <img src="http://lorempixel.com/100/190/nature/10">
+    <img src="{{poster}}" width="170" height="250">
+  </div>
+    <div class="card-content">
+      <ul>
+        <li>Title:{{Title}}</li>
+        <li>Release Date:{{Released}}</li>
+        <li>Starring: {{Actors}}</li>
+        <li>rating: {{myRating}}</li>
+      </ul>
+    </div>
+  <div class="row col card-action">
+    <a  class="add-to-watch" href="#">Add to watch</a>
+    <a class="add-to-seen-list" href="#">Watched</a>
+    <button type="submit" value="Delete">Delete</button>
+  </div>
+</div>
 
-      <button type="submit" value="Delete">Delete</button>
-
-      <p class="add-to-seen-list"><a href="#">Watched</a></p>
 {{!--       <img class="poster"> --}}
 
 
@@ -16,5 +28,4 @@
         {{/each}} -->
 <!--       </ul> -->
 
-</div>
 {{!-- {{/each}} --}}

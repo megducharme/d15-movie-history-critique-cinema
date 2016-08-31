@@ -23,15 +23,15 @@ function getUserMovies(userId) {
 }
 
 
-// function getWatchedMovies(callback) {
-//   return new Promise(function(resolve, reject){
-//     $.ajax({
-//       url: 'https://movie-history-e8f3d.firebaseio.com/movies.json'
-//     }).done(function(movieData){
-//       resolve(movieData);
-//     });
-//   });
-// }
+function getWatchedMovies(callback) {
+  return new Promise(function(resolve, reject){
+    $.ajax({
+      url: 'https://movie-history-e8f3d.firebaseio.com/movies.json'
+    }).done(function(movieData){
+      resolve(movieData);
+    });
+  });
+}
 
 //this function pushes new movie objects to the firebase database
 function addMovieToFb(movieFormObj) {
@@ -62,13 +62,16 @@ function deleteMovieFromFb(movieId) {
 
 
 // Gets movie object from OMDb
-function getNewMovie(movieId) {
+function getNewMovie(movieTitle) {
   return new Promise(function(resolve, reject){
  $.ajax({
-      url: "http://www.omdbapi.com/?t="+movieId+"&y=&plot=short&r=json"
+      url: "http://www.omdbapi.com/?s="+movieTitle+"&y=&plot=short&r=json",
+      method: "GET",
+      data: JSON
     }).done(function(movieData){
       console.log("movieData", movieData);
-      resolve(movieData);
+      // resolve(movieData);
+      movieList(movieData);
     }).fail(function(error) {
       reject(error);
     });
@@ -93,13 +96,47 @@ function rateMovie(movieFormObj, movieId) {
     });
   });
 }
+function movieList(movieData) {
+      let outputString = "";
 
+    for (let i = 0; i < movieData.Search.length; i++) {
+      // console.log("movieData yona", movieData.Search[i].Title);
+          let Title = movieData.Search[i].Title,
+              year = movieData.Search[i].Year,
+              Type = movieData.Search[i].Type,
+              poster = movieData.Search[i].Poster,
+              Id = movieData.Search[i].imdbID;
+
+               outputString += `
+<div class="col s3 card movies vertical">
+  <div class="card-image">
+    <img src="${poster}" width="170" height="250">
+  </div>
+    <div class="card-content">
+      <ul>
+        <li>Title:${Title}</li>
+        <li>Release Date:${year}</li>
+        <li>Starring: ${"Actors"}</li>
+        <li>rating: ${"4"}</li>
+      </ul>
+    </div>
+  <div class="row col card-action">
+    <a class="add-to-watch" href="#">Add to watch</a>
+    <a class="add-to-seen-list" href="#">Watched</a>
+    <button class="delete" type="submit" value="Delete">Delete</button>
+  </div>
+</div>`;
+ }
+$("#output").append(outputString);
+}
 //this exports our functions so they can be used in other functions in this project
 module.exports = {
   getUserMovies,
-  // getWatchedMovies,
+  getWatchedMovies,
   addMovieToFb,
+  getMovieTitle,
   getNewMovie,
+  movieList,
   deleteMovieFromFb,
   rateMovie
 };

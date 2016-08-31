@@ -3,16 +3,19 @@
 <head>
   <title>Movie History</title>
 
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.csscss/main.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="src/lib/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="src/lib/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css">
+
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
+<div class="container2">
 
   <div class="container">
-
     <div class="header">
       <label for="search-label">Search:</label>
-      <input type="text" name="movieSearch" class="searchInput" placeholder="Search OMDb and your tracked movies..." style="height:20px">
+      <input type="text" name="movieSearch" class="searchInput" placeholder="Search OMDb and your tracked movies..." style="height: 20px; font-size: 1.2em; ">
       <div class="buttons">
         <button id="auth-btn" type="button">Sign in with Google</button>
         <button id="sign-out-btn" type="button">Sign Out</button>
@@ -23,25 +26,38 @@
     <!-- To-Do: add breadcrumbs -->
 
 
+     <div class="hidden show-watched-lists">
+        <div class="row">
+          <button class="show-untracked-list btn grey">Show Untracked</button>
+          <button class="show-unwatched-list btn grey">Show Unwatched</button>
+          <button class="show-watched-list btn grey">Show Watched</button>
+          <button class="show-favorites-list btn grey disabled>Show Favorites</button>
+        </div>
+        <div id="slider"></div>
+    </div>
+ </div>
 
-      <table>
-        <tr>
-          <td class="hidden show-untracked-list"><a href="#">Show Untracked</a></td>
-          <td class="hidden show-unwatched-list"><a href="#">Show Unwatched</a></td>
-          <td class="hidden show-watched-list"><a href="#">Show Watched</a></td>
-          <td class="hidden show-favorites-list"><a href="#">Show Favorites</a></td>
-        </tr>
-      </table>
-    <div id="movieOutput">
-      <!-- Movie Info Here -->
+  <div>
+   <input id="ex6" type="text" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="1"/>
+   <span id="ex6CurrentSliderValLabel">Movie Rating: <span id="ex6SliderVal">0</span></span>
+  </div>
+
+    <div id="movieOutput" class="row box"></div>
+    <div id="output" class="row box">
+      <div class="ex6 hidden">
+        <input id="ex6" type="text" data-slider-min="1" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>
+        <span id="ex6CurrentSliderValLabel">Movie Rating: <span id="ex6SliderVal">0</span></span>
+      </div>
     </div>
 
     <p class="hidden add-to-watch"><a href="#">Add to Watchlist</a></p>
 
-  </div>
+</div>
 
 
-<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+
+<script src="src/lib/jquery/dist/jquery.min.js"></script>
+<script src="src/lib/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 <script src="dist/app.js"></script>
 

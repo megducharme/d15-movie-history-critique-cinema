@@ -70,6 +70,7 @@ function buildFbMovieObject(newMovie, watchedValue) {
         Title: newMovie.Title,
         Release: newMovie.Released,
         Actors: newMovie.Actors,
+        // Poster: newMovie.Poster,
         rating: null,
         watched: watchedValue,
         favorite: false,
@@ -88,11 +89,15 @@ $(document).on("click", ".delete-btn", function () {
   });
 });
 
-$(document).on("click", ".add-to-seen-list", function () {
+//add to watched movielist button
+$(document).on("click", ".addToWatched ", function () {
   console.log("currentMovie: ", currentMovie);
     let watchedValue = true;
-    let movieId = buildFbMovieObject(currentMovie, watchedValue);
-    console.log("movieid: ", movieId);
+    let myRating = null;
+    let movieId = buildFbMovieObject(currentMovie, watchedValue, myRating);
+    // console.log("movieid: ", movieId);
+  $("#ex6").slider(movieId);
+    // rating(movieId);
     db.addMovieToFb(movieId);
   });
 
@@ -104,6 +109,7 @@ $("#auth-btn").click(function() {
             let user = result.user;
             console.log("logged in user", user.uid);
             currentUser = fb.auth().currentUser.uid;
+            $(".show-watched-lists").removeClass("hidden");
             prepFbMoviesForDomLoad();
         });
 });
@@ -137,7 +143,7 @@ $(".searchInput").keypress(function(event) {
 // This is supposed to display the unwatched movies list
 $(".show-unwatched-list").click(function(event) {
     console.log("Show Unwatched clicked");
-    $(".show-unwatched-list").toggleClass("hidden");
+    // $(".show-unwatched-list").toggleClass("hidden");
     console.log("in showunwatchedlist the user is: ",currentUser);
     let watchedValue = false;
     showMyMovies(currentUser, watchedValue);
@@ -146,7 +152,7 @@ $(".show-unwatched-list").click(function(event) {
 // This is supposed to display the watched movies list
 $(".show-watched-list").click(function(event) {
     console.log("Show Watched clicked");
-    $(".show-watched-list").toggleClass("hidden");
+    // $(".show-watched-list").toggleClass("hidden");
     let watchedValue = true;
     showMyMovies(currentUser, watchedValue);
 });
@@ -154,17 +160,18 @@ $(".show-watched-list").click(function(event) {
 // This is supposed to show the favorite movies list
 $(".show-favorites-list").click(function(event) {
     console.log("showFavorite clicked");
-    $(".show-favorites-list").toggleClass("hidden");
+    // $(".show-favorites-list").toggleClass("hidden");
 });
 
 
-// $(".delete").click(function(event) {
-//     console.log("deleteMovie clicked");
-//     console.log("currentMovie: ", currentMovie);
-//     let movieId = buildFbMovieObject(currentMovie);
-//     console.log("movieid: ", movieId);
-//     db.addMovieToFb(movieId);
-// });
+$(".delete").click(function(event) {
+    console.log("deleteMovie clicked");
+    console.log("currentMovie: ", currentMovie);
+    let movieId = buildFbMovieObject(currentMovie);
+    console.log("movieid: ", movieId);
+    db.addMovieToFb(movieId);
+    $(".delete").remove();
+});
 
 // Add movie to watch list
 $(".add-to-watch").click(function(event) {
@@ -184,3 +191,18 @@ $("#add-movie").click(function() {
     $(".uiContainer--wrapper").html(populateNewMovie);
   });
 });
+
+
+
+//slider
+
+// With JQuery
+// function rating(rate) {
+  $("#ex6").slider();
+  $("#ex6").on("slide", function(slideEvt) {
+    $("#ex6SliderVal").text(slideEvt.value);
+    let myRating = slideEvt.value;
+    console.log("myRating", myRating);
+    // return rating(movieId);
+  });
+// }
