@@ -17,24 +17,43 @@ let db = require("./db-interactions"),
 
 // Displays search results in DOM. Each result after that overrites previous result.
 function newMovieSearch(title) {
-  db.getNewMovie(title)
+  db.searchForNewMovies(title)
     .then(function(movieData) {
-      $("#movieOutput").html("");
-      $("#movieOutput").append(searchTemplate(movieData));
-      currentMovie = movieData;
-      $(".searchInput").val("");
-  });
+      let movieSearchArray = movieData.Search;
+ ////use for to iterate through your array, add properties to each object ie obj.rating = ???, obj.watched = ??
+      populateSearch(movieSearchArray);
+      // getExpandedData(movieSearchArray);
+    });
 }
+
+function getExpandedData(modifiedMovieArray){
+  let newMovieObjects = [];
+  modifiedMovieArray.forEach(function (movie, index) {
+  db.getNewMovie(movie.imdbID)
+    .then(function(result){
+      newMovieObjects.push(result);
+    });
+      // console.log("new movie objects", newMovieObjects);
+  });
+  populateSearch(newMovieObjects);
+}
+
+function populateSearch(newMovieObjects){
+  $("#movieOutput").html("");
+  $("#movieOutput").append(searchTemplate(newMovieObjects));
+  // currentMovie = movieData;
+  $(".searchInput").val("");
+}
+
 
 // Show movies in users watched movies list
 function showMyMovies(userId, watchedValue) {
-    console.log("showMyMovies running");
-    console.log("the user is:", userId);
-    console.log("the watchedValue: ", watchedValue);
+    // console.log("showMyMovies running");
+    // console.log("the user is:", userId);
+    // console.log("the watchedValue: ", watchedValue);
     var movies = [];
     db.getUserMovies(userId)
       .then (function(myMovieData) {
-        console.log("showMyMovies after promise:", myMovieData);
         for (var movie in myMovieData) {
             console.log("movie: ", movie);
             console.log(myMovieData[movie].watched);
@@ -66,16 +85,18 @@ function prepFbMoviesForDomLoad() {
 // Q: How would the this. method look in this function? err saying possible strict violation.   this.movie = "test";
 // Build a movie object with relevant data to eventually display in DOM
 function buildFbMovieObject(newMovie, watchedValue) {
+  // console.log(newMovie);
     var movie = {
+        Poster: newMovie.Poster,
         Title: newMovie.Title,
         Release: newMovie.Released,
         Actors: newMovie.Actors,
         rating: null,
         watched: watchedValue,
+        id: newMovie.imdbID,
         favorite: false,
         user: currentUser
     };
-    console.log("movie returned from buildFbMovieObject: ", movie);
     return movie;
 }
 

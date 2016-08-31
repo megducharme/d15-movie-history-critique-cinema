@@ -10,8 +10,8 @@ let Handlebars = require("hbsfy/runtime");
 function getUserMovies(userId) {
   return new Promise(function(resolve, reject){
     $.ajax({
-      url: `https://movie-history-project-c7181.firebaseio.com/
-/movies.json?orderBy="user"&equalTo="${userId}"`
+      url: `https://movie-hisotry-group-project.firebaseio.com/
+movies.json?orderBy="user"&equalTo="${userId}"`
     }).done(function(myMovieData){
       resolve(myMovieData);
       // thom- added fail reject user messages/////////////////
@@ -37,7 +37,7 @@ function getUserMovies(userId) {
 function addMovieToFb(movieFormObj) {
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: 'https://movie-history-project-c7181.firebaseio.com/movies.json',
+      url: 'https://movie-hisotry-group-project.firebaseio.com/movies.json',
       type: 'POST',
       data: JSON.stringify(movieFormObj),
       dataType: 'json'
@@ -52,7 +52,7 @@ function deleteMovieFromFb(movieId) {
   console.log("movieId", movieId);
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: `https://movie-history-project-c7181.firebaseio.com/${movieId}.json`,
+      url: `https://movie-hisotry-group-project.firebaseio.com/${movieId}.json`,
       type: 'DELETE'
     }).done(function(data) {
       resolve(data);
@@ -60,14 +60,25 @@ function deleteMovieFromFb(movieId) {
   });
 }
 
+// Gets search from OMDB
+function searchForNewMovies(movieSearch) {
+  return new Promise(function(resolve, reject){
+ $.ajax({
+      url: `https://www.omdbapi.com/?s="${movieSearch}"&y=&plot=short&r=json`
+    }).done(function(movieData){
+      resolve(movieData);
+    }).fail(function(error) {
+      reject(error);
+    });
+  });
+}
 
 // Gets movie object from OMDb
 function getNewMovie(movieId) {
   return new Promise(function(resolve, reject){
  $.ajax({
-      url: "http://www.omdbapi.com/?t="+movieId+"&y=&plot=short&r=json"
+      url: `https://www.omdbapi.com/?i=${movieId}&y=&plot=short&r=json`
     }).done(function(movieData){
-      console.log("movieData", movieData);
       resolve(movieData);
     }).fail(function(error) {
       reject(error);
@@ -85,7 +96,7 @@ function getMovieTitle() {
 function rateMovie(movieFormObj, movieId) {
   return new Promise(function(resolve, reject) {
     $.ajax({
-      url: `https://movie-history-project-c7181.firebaseio.com/movies/${movieId}.json`,
+      url: `https://movie-hisotry-group-project.firebaseio.com/movies/${movieId}.json`,
       type: 'PUT',
       data: JSON.stringify(movieFormObj)
     }).done(function(data) {
@@ -97,9 +108,10 @@ function rateMovie(movieFormObj, movieId) {
 //this exports our functions so they can be used in other functions in this project
 module.exports = {
   getUserMovies,
-  // getWatchedMovies,
+  // getWatchedMovies,c
   addMovieToFb,
   getNewMovie,
   deleteMovieFromFb,
-  rateMovie
+  rateMovie,
+  searchForNewMovies
 };
